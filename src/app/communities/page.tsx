@@ -4,30 +4,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from "@/lib/auth" ;
 import UserMenu from '@/components/UserMenu';
 import CreateCommunityForm from '@/components/CreateCommunityForm';
-
-async function getCommunities() {
-    
-  try {
-    const communities = await prisma.community.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: {
-        _count: {
-          select: {
-            posts: true,
-          },
-        },
-      },
-    });
-    return communities;
-  } catch (error) {
-    console.error('Error fetching communities:', error);
-    return [];
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+import { getCommunities } from '@/app/actions/communityActions';
 
 export default async function CommunitiesPage() {
   const communities = await getCommunities();

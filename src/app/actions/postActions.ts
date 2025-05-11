@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-export async function getPostData(slug: string) {
+export async function getPostData(id: string) {
   const post = await prisma.post.findUnique({
     where: {
-      slug,
+      id,
     },
     include: {
       user: {
