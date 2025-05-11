@@ -21,7 +21,7 @@ export default function PostFeed({ posts }: PostFeedProps) {
       {posts.map((post) => ( 
         
         <Link key={post.id} href={`/r/${post.community?.slug || post.communityId}/post/${post.id}`}>
-          <div className="bg-white rounded-md shadow hover:shadow-md transition-shadow p-4 flex gap-4">
+          <div className="bg-white rounded-md shadow hover:shadow-md transition-shadow p-4 flex gap-4 mt-4">
             {/* Vote buttons */}
             <div className="flex flex-col items-center gap-1">
               <button className="text-gray-400 hover:text-blue-500 focus:outline-none">

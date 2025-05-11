@@ -62,14 +62,14 @@ async function getPopularCommunities() {
 
 export default async function HomePage() {
   const recentPosts = await getRecentPosts();
-  console.log(recentPosts)
+  // console.log(recentPosts)
   const popularCommunities = await getPopularCommunities();
 
   return (
     <div className="container mx-auto max-w-5xl px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <h1 className="text-2xl font-bold mb-4">Recent Posts</h1>
+        <div className="md:col-span-2 mt-4">
+          <h1 className="text-2xl font-bold mb-4 ">Recent Posts</h1>
           
           {recentPosts.length > 0 ? (
             <PostFeed posts={recentPosts} />

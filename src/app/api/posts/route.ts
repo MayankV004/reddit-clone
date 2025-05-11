@@ -24,6 +24,13 @@ export async function GET() {
             id: true,
           },
         },
+        user: {
+          select: {
+            username: true,
+            // image: true,
+            id: true,
+          },
+        },
         votes: true,
         _count: {
           select: {

@@ -7,7 +7,7 @@ interface Params {
   };
 }
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET({ params }: Params) {
   const { slug } = params;
   try {
     const community = await prisma.community.findUnique({
