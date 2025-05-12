@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { z } from "zod";
-import { connect } from "http2";
+
 
 const postSchema = z.object({
   title: z.string().min(3).max(100),
