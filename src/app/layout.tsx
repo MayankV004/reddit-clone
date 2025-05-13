@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/components/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Reddit - The hear of the internet",
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="dark:bg-zinc-900 bg-white text-zinc-900 dark:text-zinc-100 antialiased">
         <AuthProvider>
+          <Toaster/>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

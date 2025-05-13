@@ -3,23 +3,28 @@
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import Image from 'next/image';
-import { ChevronUp, ChevronDown, Reply, MoreHorizontal } from 'lucide-react';
+import { ChevronUp, ChevronDown, Reply } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+
+// Types
+type Vote = {
+  id: string;
+  value: number;
+  userId: string;
+};
+
+type User = {
+  id: string;
+  username: string;
+  image: string | null;
+};
 
 type Comment = {
   id: string;
   text: string;
   createdAt: Date;
-  user: {
-    id: string;
-    username: string;
-    image: string | null;
-  };
-  votes: {
-    id: string;
-    value: number;
-    userId: string;
-  }[];
+  user: User;
+  votes: Vote[];
   _count: {
     children: number;
   };
@@ -32,116 +37,6 @@ interface CommentSectionProps {
   userId?: string;
 }
 
-export default function CommentSection({
-  postId,
-  comments,
-  isLoggedIn,
-  userId,
-}: CommentSectionProps) {
-  const [newComment, setNewComment] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [commentsList, setCommentsList] = useState<Comment[]>(comments);
-
-  async function handleSubmitComment(e: React.FormEvent) {
-    e.preventDefault();
-    
-    if (!isLoggedIn) {
-      toast.error('You must be logged in to comment');
-      return;
-    }
-    
-    if (!newComment.trim()) {
-      toast.error('Comment cannot be empty');
-      return;
-    }
-    
-    try {
-      setIsSubmitting(true);
-      
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          postId,
-          text: newComment,
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to submit comment');
-      }
-      
-      const createdComment = await response.json();
-      
-      // Add new comment to the list
-      setCommentsList([createdComment, ...commentsList]);
-      setNewComment(''); // Clear input
-      toast.success('Comment posted successfully');
-      
-    } catch (error) {
-      toast.error('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  function getTotalVotes(votes: { value: number }[]) {
-    return votes.reduce((total, vote) => total + vote.value, 0);
-  }
-
-  function getUserVote(votes: { userId: string; value: number }[]) {
-    if (!userId) return 0;
-    const userVote = votes.find(vote => vote.userId === userId);
-    return userVote ? userVote.value : 0;
-  }
-
-  return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <h2 className="text-lg font-medium mb-4">Comments</h2>
-      
-      {/* Comment form */}
-      <form onSubmit={handleSubmitComment} className="mb-6">
-        <textarea
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
-          placeholder={isLoggedIn ? "What are your thoughts?" : "Log in to leave a comment"}
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          disabled={!isLoggedIn || isSubmitting}
-        ></textarea>
-        
-        <div className="flex justify-end mt-2">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md font-medium disabled:opacity-50"
-            disabled={!isLoggedIn || isSubmitting || !newComment.trim()}
-          >
-            {isSubmitting ? 'Posting...' : 'Comment'}
-          </button>
-        </div>
-      </form>
-      
-      {/* Comments list */}
-      <div className="space-y-4">
-        {commentsList.length === 0 ? (
-          <p className="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>
-        ) : (
-          commentsList.map(comment => (
-            <CommentItem 
-              key={comment.id} 
-              comment={comment} 
-              postId={postId}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
-
 interface CommentItemProps {
   comment: Comment;
   postId: string;
@@ -149,15 +44,27 @@ interface CommentItemProps {
   userId?: string;
 }
 
+// Utility functions
+function getUserVote(votes: Vote[], userId?: string): number {
+  if (!userId) return 0;
+  const userVote = votes.find(vote => vote.userId === userId);
+  return userVote ? userVote.value : 0;
+}
+
+function getTotalVotes(votes: { value: number }[]): number {
+  return votes.reduce((total, vote) => total + vote.value, 0);
+}
+
+// CommentItem Component
 function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState<Comment[]>([]);
   const [isLoadingReplies, setIsLoadingReplies] = useState(false);
-  const [userVote, setUserVote] = useState(userId ? getUserVote(comment.votes) : 0);
+  const [userVote, setUserVote] = useState(getUserVote(comment.votes, userId));
   const [voteScore, setVoteScore] = useState(getTotalVotes(comment.votes));
-
+ 
   async function fetchReplies() {
     if (comment._count.children === 0) return;
     
@@ -172,7 +79,6 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
       const data = await response.json();
       setReplies(data);
       setShowReplies(true);
-      
     } catch (error) {
       toast.error('Failed to load replies');
     } finally {
@@ -223,7 +129,6 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
       setReplyText('');
       setIsReplying(false);
       toast.success('Reply posted successfully');
-      
     } catch (error) {
       toast.error('Something went wrong. Please try again.');
     }
@@ -265,11 +170,10 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
       if (!response.ok) {
         throw new Error('Failed to cast vote');
       }
-
     } catch (error) {
       // Revert on error
       setVoteScore(getTotalVotes(comment.votes));
-      setUserVote(userId ? getUserVote(comment.votes) : 0);
+      setUserVote(getUserVote(comment.votes, userId));
       toast.error('Something went wrong. Please try again.');
     }
   }
@@ -282,15 +186,21 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
         {/* User avatar */}
         <div className="flex-shrink-0">
           {comment.user.image ? (
-            <Image 
-              src={comment.user.image} 
-              alt={comment.user.username} 
-              width={32} 
-              height={32} 
-              className="rounded-full"
-            />
+            <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
+              <Image 
+                src={comment.user.image} 
+                alt={comment.user.username} 
+                width={32} 
+                height={32} 
+                className="rounded-full"  
+              />
+            </div>
           ) : (
-            <div className="w-8 h-8 bg-gray-200 rounded-full" />
+            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+              <span className="text-gray-500 text-xs font-medium">
+                {comment.user.username.charAt(0).toUpperCase()}
+              </span>
+            </div>
           )}
         </div>
         
@@ -409,12 +319,102 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
   );
 }
 
-function getUserVote(votes: { userId: string; value: number }[], userId?: string) {
-  if (!userId) return 0;
-  const userVote = votes.find(vote => vote.userId === userId);
-  return userVote ? userVote.value : 0;
-}
+// Main CommentSection Component
+export default function CommentSection({
+  postId,
+  comments,
+  isLoggedIn,
+  userId,
+}: CommentSectionProps) {
+  const [newComment, setNewComment] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [commentsList, setCommentsList] = useState<Comment[]>(comments);
 
-function getTotalVotes(votes: { value: number }[]) {
-  return votes.reduce((total, vote) => total + vote.value, 0);
+  async function handleSubmitComment(e: React.FormEvent) {
+    e.preventDefault();
+    
+    if (!isLoggedIn) {
+      toast.error('You must be logged in to comment');
+      return;
+    }
+    
+    if (!newComment.trim()) {
+      toast.error('Comment cannot be empty');
+      return;
+    }
+    
+    try {
+      setIsSubmitting(true);
+      
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postId,
+          text: newComment,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit comment');
+      }
+      
+      const createdComment = await response.json();
+      
+      // Add new comment to the list
+      setCommentsList([createdComment, ...commentsList]);
+      setNewComment(''); // Clear input
+      toast.success('Comment posted successfully');
+    } catch (error) {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow p-4">
+      <h2 className="text-lg font-medium mb-4">Comments</h2>
+      
+      {/* Comment form */}
+      <form onSubmit={handleSubmitComment} className="mb-6">
+        <textarea
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+          placeholder={isLoggedIn ? "What are your thoughts?" : "Log in to leave a comment"}
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          disabled={!isLoggedIn || isSubmitting}
+        ></textarea>
+        
+        <div className="flex justify-end mt-2">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md font-medium disabled:opacity-50"
+            disabled={!isLoggedIn || isSubmitting || !newComment.trim()}
+          >
+            {isSubmitting ? 'Posting...' : 'Comment'}
+          </button>
+        </div>
+      </form>
+      
+      {/* Comments list */}
+      <div className="space-y-4">
+        {commentsList.length === 0 ? (
+          <p className="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>
+        ) : (
+          commentsList.map(comment => (
+            <CommentItem 
+              key={comment.id} 
+              comment={comment} 
+              postId={postId}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
 }

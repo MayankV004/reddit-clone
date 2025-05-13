@@ -28,6 +28,7 @@ async function PostPage({ params }: PostPageProps) {
   const voteScore = post.votes.reduce((acc, vote) => acc + vote.value, 0);
   
   const createdAt = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
+  // console.log("Post Data: ", post.comments);
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">

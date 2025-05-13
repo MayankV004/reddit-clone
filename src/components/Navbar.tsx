@@ -29,7 +29,7 @@ function Navbar() {
   
   const { theme , setTheme} = useTheme();
   const {data : session} = useSession();
-
+  console.log(session?.user);
   return (
     <header className="bg-white  dark:text-white dark:bg-zinc-900 shadow-sm sticky top-0 z-10 ">
       <div className="container dark:border-b-2 mx-auto flex items-center justify-between h-13 px-4">
