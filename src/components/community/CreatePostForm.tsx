@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
-import { useState, useCallback , useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import { useState } from "react";
+
 
 interface CreatePostFormData {
   communityId: string;

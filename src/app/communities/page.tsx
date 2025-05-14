@@ -1,22 +1,13 @@
-import Link from 'next/link';
-import {prisma} from "@/lib/prisma"
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from "@/lib/auth" ;
-import UserMenu from '@/components/UserMenu';
-import CreateCommunityForm from '@/components/CreateCommunityForm';
-import { getCommunities } from '@/app/actions/communityActions';
-
+import Link from "next/link";
+import CreateCommunityForm from "@/components/CreateCommunityForm";
+import { getCommunities } from "@/app/actions/communityActions";
 export default async function CommunitiesPage() {
   const communities = await getCommunities();
-  const session = await getServerSession(authOptions);
-  
+
   return (
     <div className="container mx-auto max-w-5xl py-8 px-4">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Communities</h1>
-        <div className="flex items-center gap-4">
-          <UserMenu session={session} />
-        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
@@ -31,8 +22,8 @@ export default async function CommunitiesPage() {
             ) : (
               <div className="divide-y">
                 {communities.map((community) => (
-                  <Link 
-                    key={community.id} 
+                  <Link
+                    key={community.id}
                     href={`/r/${community.slug}`}
                     className="block p-4 hover:bg-gray-50 transition-colors"
                   >
@@ -40,10 +31,13 @@ export default async function CommunitiesPage() {
                       <div>
                         <h3 className="font-medium">r/{community.slug}</h3>
                         <p className="text-sm text-gray-500">
-                          {community._count.posts} posts • Created {new Date(community.createdAt).toLocaleDateString()}
+                          {community._count.posts} posts • Created{" "}
+                          {new Date(community.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="text-blue-500 text-sm font-medium">View</div>
+                      <div className="text-blue-500 text-sm font-medium">
+                        View
+                      </div>
                     </div>
                   </Link>
                 ))}

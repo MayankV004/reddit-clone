@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/session";
+
 
 const communitySchema = z.object({
   name: z.string().min(3).max(21),
@@ -31,13 +31,8 @@ export async function POST(req: Request)
 {
   try {
 
-      const session = await getServerSession(authOptions)
-
-      if(!session || !session.user || !session.user.id)
-      {
-         return NextResponse.json({error : "Unauthorized"} , {status :401});
-      }
-        const userId  = session?.user.id;
+        const user = await requireAuth();
+        const userId  = user.id;
 
         // Check if the user is authenticated
         if(!userId) {

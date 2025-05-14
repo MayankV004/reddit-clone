@@ -17,11 +17,11 @@ export default function PostFeed({ posts }: PostFeedProps) {
     return upvotes - downvotes;
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 dark:bg-zinc-900">
       {posts.map((post) => ( 
         
         <Link key={post.id} href={`/r/${post.community?.slug || post.communityId}/post/${post.id}`}>
-          <div className="bg-white rounded-md shadow hover:shadow-md transition-shadow p-4 flex gap-4 mt-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-md shadow hover:shadow-md dark:shadow-white dark:text-white transition-shadow p-4 flex gap-4 mt-4">
             {/* Vote buttons */}
             <div className="flex flex-col items-center gap-1">
               <button className="text-gray-400 hover:text-blue-500 focus:outline-none">
@@ -36,15 +36,15 @@ export default function PostFeed({ posts }: PostFeedProps) {
             </div>
 
             {/* Post content */}
-            <div className="flex-1">
-              <div className="flex items-center text-xs text-gray-500 mb-2">
+            <div className="flex-1 ">
+              <div className="flex items-center text-xs text-gray-500 mb-2  ">
                 <span>Posted by u/{post.user?.username}</span>
                 <span className="mx-1">•</span>
                 <span>{formatDate(post.createdAt)}</span>
               </div>
               
-              <h3 className="text-lg font-medium mb-2">{post.title}</h3>
-              <p className="text-gray-800 mb-3 line-clamp-3">{post.content}</p>
+              <h3 className="text-lg font-medium mb-2 dark:text-white">{post.title}</h3>
+              <p className="text-gray-800 mb-3 line-clamp-3 dark:text-white">{post.content}</p>
               
               <div className="flex items-center gap-4 text-gray-500 text-sm">
                 <div className="flex items-center gap-1">

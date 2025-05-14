@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import Image from 'next/image';
 import { ChevronUp, ChevronDown, Reply } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 // Types
 type Vote = {
@@ -64,6 +65,7 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
   const [isLoadingReplies, setIsLoadingReplies] = useState(false);
   const [userVote, setUserVote] = useState(getUserVote(comment.votes, userId));
   const [voteScore, setVoteScore] = useState(getTotalVotes(comment.votes));
+  const router = useRouter();
  
   async function fetchReplies() {
     if (comment._count.children === 0) return;
@@ -136,6 +138,7 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
 
   async function handleVote(value: number) {
     if (!isLoggedIn) {
+
       toast.error('You must be logged in to vote');
       return;
     }
@@ -388,10 +391,10 @@ export default function CommentSection({
           disabled={!isLoggedIn || isSubmitting}
         ></textarea>
         
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-end mt-2 ">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md font-medium disabled:opacity-50"
+            className="bg-[#2f4b5d] text-white px-4 py-2 rounded-full font-medium hover:bg-[#183B4E] "
             disabled={!isLoggedIn || isSubmitting || !newComment.trim()}
           >
             {isSubmitting ? 'Posting...' : 'Comment'}

@@ -36,10 +36,10 @@ function Navbar() {
         {/* Logo and title */}
         <Link href="/" className="flex items-center space-x-2">
           <Image src="/Reddit_Logo.webp" alt="Logo" width={30} height={30} />
-          <span className="text-red-500 text-2xl font-bold">reddit</span>
+          <span className="text-orange-500 text-2xl font-bold">reddit</span>
         </Link>
 
-        {/* Search Box */}
+        {/* Search Box */} 
         <form
           action=""
           className="w-full sm:max-w-md flex flex-1 items-center gap-5 px-2 dark:bg-zinc-700 dark:border-2 dark:border-zinc-800 bg-gray-100 border-2 border-gray-200 rounded-full py-1.5 text-sm focus:ring-2 focus:ring-blue-500 "
