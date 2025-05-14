@@ -1,15 +1,47 @@
 import { requireAuth } from "@/lib/session";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import ProfileTabs from "@/components/profile/ProfileTabs";
+import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Your Profile | Reddit Clone",
+  description: "View and edit your profile, posts, and communities",
+};
 
 export default async function ProfilePage() {
   const user = await requireAuth();
   
+  // Fetch full user data with related posts and communities
+  const userData = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      posts: {
+        include: {
+          community: true,
+          votes: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      subscriptions: {
+        include: {
+          community: true,
+        },
+      },
+    },
+  });
+
+  if (!userData) {
+    throw new Error("User not found");
+  }
+
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
-      <div className="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-2">Welcome, {user.name}!</h2>
-        <p className="text-gray-600 dark:text-gray-300">Email: {user.email}</p>
-      </div>
+    <div className="container max-w-4xl mx-auto py-6 px-4 sm:px-6">
+      <ProfileHeader user={userData} />
+      <ProfileTabs user={userData} />
     </div>
   );
 }
