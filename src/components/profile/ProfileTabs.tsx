@@ -57,7 +57,7 @@ export default function ProfileTabs({ user }: ProfileTabsProps) {
         ) : (
           user.posts.map((post) => (
             <Card key={post.id} className="overflow-hidden hover:shadow-md transition-shadow">
-              <Link href={`/r/${post.community.name}/post/${post.slug || post.id}`}>
+              <Link href={`/r/${post.community.slug}/post/${post.id}`}>
                 <CardContent className="p-4">
                   <div className="flex flex-col space-y-3">
                     {/* Post header with community and timestamp */}

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 export default async function ProfilePage() {
   const user = await requireAuth();
   
-  // Fetch full user data with related posts and communities
   const userData = await prisma.user.findUnique({
     where: { id: user.id },
     include: {
