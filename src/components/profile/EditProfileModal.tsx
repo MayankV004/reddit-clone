@@ -36,7 +36,7 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
     email: user.email || "",
   });
   
-  // Image handling (using Supabase storage in a real implementation)
+ 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(user.image || null);
   
@@ -69,28 +69,19 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
     setIsSubmitting(true);
     
     try {
-      // In a real implementation:
-      // 1. Upload the image to Supabase storage if changed
+     
       let imageUrl = user.image;
       
       if (imageFile) {
-        // This would be replaced with actual Supabase upload code
-        // const { data, error } = await supabaseClient.storage
-        //   .from('profile-images')
-        //   .upload(`${user.id}/profile.jpg`, imageFile);
-        // 
-        // if (error) throw error;
-        // imageUrl = supabaseClient.storage.from('profile-images').getPublicUrl(data.path).publicUrl;
-        
-        // For now, simulate this with a delay
+       
         await new Promise(resolve => setTimeout(resolve, 1000));
         imageUrl = imagePreview;
       } else if (imagePreview === null && user.image) {
-        // User removed their image
+        
         imageUrl = null;
       }
       
-      // 2. Update the user profile in the database
+   
       const response = await fetch(`/api/users/profile`, {
         method: "PATCH",
         headers: {
@@ -131,7 +122,7 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
     }
   };
   
-  // Get user initials for avatar fallback
+  // Get user initials for avatar 
   const getUserInitials = () => {
     if (formData.name) {
       return formData.name.slice(0, 2).toUpperCase();

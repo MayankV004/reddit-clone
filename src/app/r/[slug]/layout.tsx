@@ -48,6 +48,7 @@ export default async function CommunityLayout({ children, params }: LayoutProps)
   const resParams = await Promise.resolve(params)
   const { slug } = resParams;
   const community = await getCommunityBySlug(slug);
+  // console.log("Community Layout", community);
 
   if (!community) {
     return notFound();

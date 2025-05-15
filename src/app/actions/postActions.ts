@@ -76,3 +76,32 @@ export async function getVoteStatus(postId: string) {
 
   return vote;
 }
+
+export async function getRecentPosts() {
+  try {
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        community: true,
+
+        votes: true,
+        _count: {
+          select: {
+            comments: true,
+            votes: true,
+          },
+        },
+      },
+      take: 10, // Limit to 10 most recent posts
+    });
+
+    return posts;
+  } catch (error) {
+    console.error("Error fetching recent posts:", error);
+    return [];
+  } finally {
+    await prisma.$disconnect();
+  }
+}

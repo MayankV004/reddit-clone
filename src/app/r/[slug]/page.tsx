@@ -27,6 +27,8 @@ async function getCommunity(slug: string) {
                 name: true,
                 slug: true,
                 id: true,
+                description: true,
+                
               },
             },
             user: {
@@ -74,13 +76,26 @@ export default async function CommunityPage({ params }: PageProps) {
     ...post,
     createdAt: new Date(post.createdAt),
     updatedAt: new Date(post.updatedAt),
-    community: { id: community.id, name: community.name, slug: community.slug },
+    community: { 
+      id: community.id, 
+      name: community.name, 
+      slug: community.slug,
+      createdAt: community.createdAt,
+      description: community.description,
+    },
   })) as Post[];
 
   return (
     <div className="container mx-auto max-w-5xl pt-6">
       <CommunityHeader
-        community={{ ...community, slug: community.slug as string }}
+        community={{ 
+          ...community, 
+          slug: community.slug as string,
+          imageUrl: community.imageUrl ?? undefined,
+          createdAt: new Date(community.createdAt),
+         description: community.description ?? undefined,
+          
+        }}
       />
 
       <div className="mt-6">

@@ -20,15 +20,26 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
       day: 'numeric'
     });
   };
-    console.log("Community Header", community);
+    // console.log("Community Header", community);
     return (
         <div className="bg-white shadow rounded-md p-4">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex items-center">
+          <img
+            src={community.imageUrl || "/Reddit_Logo.webp"}
+            alt={community.name}
+            className="w-12 h-12 rounded-full mr-4"
+          />
+          <div>
           <h1 className="text-2xl font-bold">r/{community.slug}</h1>
           <p className="text-sm text-gray-500">
-            {/* Created on {formatDate(new Date(community.createdAt))} */}
+            Created on {formatDate(new Date(community.createdAt))}
           </p>
+          <p className="text-sm text-gray-500">
+            {community.description}
+          </p>
+          </div>
+          
         </div>
         
         <div>

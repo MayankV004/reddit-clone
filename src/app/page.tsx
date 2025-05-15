@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import PostFeed from "@/components/PostFeed";
 import {
   Select,
@@ -8,66 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-async function getRecentPosts() {
-  try {
-    const posts = await prisma.post.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        community: true,
-
-        votes: true,
-        _count: {
-          select: {
-            comments: true,
-            votes: true,
-          },
-        },
-      },
-      take: 10, // Limit to 10 most recent posts
-    });
-
-    return posts;
-  } catch (error) {
-    console.error("Error fetching recent posts:", error);
-    return [];
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-async function getPopularCommunities() {
-  try {
-    const communities = await prisma.community.findMany({
-      include: {
-        _count: {
-          select: {
-            posts: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc", // For now just order by creation date
-      },
-      take: 5, // Limit to 5 communities
-    });
-
-    return communities;
-  } catch (error) {
-    console.error("Error fetching popular communities:", error);
-    return [];
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
+import { getRecentPosts } from "./actions/postActions";
+import { getPopularCommunities } from "./actions/communityActions";
 export default async function HomePage() {
   const recentPosts = await getRecentPosts();
   // console.log(recentPosts)
   const popularCommunities = await getPopularCommunities();
-
   return (
     <div className="container mx-auto max-w-5xl px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

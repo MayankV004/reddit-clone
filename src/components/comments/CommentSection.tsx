@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import Image from 'next/image';
 import { ChevronUp, ChevronDown, Reply } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+
 
 // Types
 type Vote = {
@@ -65,7 +65,7 @@ function CommentItem({ comment, postId, isLoggedIn, userId }: CommentItemProps) 
   const [isLoadingReplies, setIsLoadingReplies] = useState(false);
   const [userVote, setUserVote] = useState(getUserVote(comment.votes, userId));
   const [voteScore, setVoteScore] = useState(getTotalVotes(comment.votes));
-  const router = useRouter();
+  
  
   async function fetchReplies() {
     if (comment._count.children === 0) return;

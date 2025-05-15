@@ -5,8 +5,15 @@ import { requireAuth } from "@/lib/session";
 
 
 const communitySchema = z.object({
-  name: z.string().min(3).max(21),
-  
+  name: z
+    .string()
+    .min(3, { message: 'Community name must be at least 3 characters' })
+    .max(21, { message: 'Community name must be at most 21 characters' })
+    .regex(/^[a-zA-Z0-9_]+$/, { 
+      message: 'Community name can only contain letters, numbers, and underscores' 
+    }),
+  description: z.string().max(300).optional(),
+  // image: z.string().url().optional(),
 });
 
 export async function GET() { // to fetch all Communities
@@ -42,7 +49,7 @@ export async function POST(req: Request)
         }
 
         const body = await req.json();
-
+        // console.log("Request Body:", body);
         // Validation
         const validateResult = communitySchema.safeParse(body);
         if(!validateResult.success){
@@ -51,7 +58,8 @@ export async function POST(req: Request)
                 { status: 400 });
         }       
         
-        const { name } = validateResult.data;
+        const { name , description } = validateResult.data;
+        console.log("Validated Data:", validateResult.data);
         const slug = name.toLowerCase().replace(/\s+/g, "-");
         const existingCommunity = await prisma.community.findFirst({
             where: { 
@@ -72,6 +80,8 @@ export async function POST(req: Request)
           data: {
             name,
             slug,
+            description,
+            // imageUrl: image,
             creator: { connect: { id: userId } }, // Link creator field with the user's ID
           },
         });

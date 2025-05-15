@@ -119,7 +119,7 @@ function Navbar() {
                 <DropdownMenuItem><UserRoundPen/> Profile</DropdownMenuItem>
               </Link>
 
-              <Link href="/settings">
+              <Link href="#">
                 <DropdownMenuItem><Settings/> Settings</DropdownMenuItem>
               </Link>
 

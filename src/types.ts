@@ -2,6 +2,9 @@ export interface Community {
   id: string;
   name: string;
   slug: string | null;
+  createdAt: Date;
+  imageUrl?: string;
+  description?: string;
 }
 export interface User {
   id: string;

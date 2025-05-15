@@ -29,11 +29,23 @@ export default async function CommunitiesPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div>
+                        <div className="flex flex-co items-center mb-1 ">
+                          <img
+                            src={community.imageUrl || "/Reddit_Logo.webp"}
+                            alt={community.name}
+                            className="w-8 h-8 rounded-full mr-2"
+                          />
+                        
+                      <div>
                         <h3 className="font-medium">r/{community.slug}</h3>
-                        <p className="text-sm text-gray-500">
-                          {community._count.posts} posts • Created{" "}
-                          {new Date(community.createdAt).toLocaleDateString()}
-                        </p>
+                          <p className="text-sm text-gray-500">
+                            {community._count.posts} posts • Created{" "}
+                            {new Date(community.createdAt).toLocaleDateString()}
+                          </p>
+
+                      </div>
+                          
+                        </div>
                       </div>
                       <div className="text-blue-500 text-sm font-medium">
                         View
