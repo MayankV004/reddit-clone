@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { getRecentPosts } from "./actions/postActions";
 import { getPopularCommunities } from "./actions/communityActions";
+import { Post } from "@/types";
 export default async function HomePage() {
   const recentPosts = await getRecentPosts();
   // console.log(recentPosts)
@@ -31,7 +32,20 @@ export default async function HomePage() {
             </Select>
           </div>
           {recentPosts.length > 0 ? (
-            <PostFeed posts={recentPosts} />
+            <PostFeed
+              posts={recentPosts.map((post) => ({
+                  ...post,
+                  createdAt: new Date(post.createdAt),
+                  updatedAt: new Date(post.updatedAt),
+                  community: { 
+                    id: post.community.id, 
+                    name: post.community.name, 
+                    slug: post.community.slug,
+                    createdAt: post.community.createdAt,
+                    description: post.community.description,
+                  },
+                })) as Post[]}
+            />
           ) : (
             <div className="bg-white rounded-md shadow p-6 text-center">
               <p className="text-gray-500">No posts yet.</p>

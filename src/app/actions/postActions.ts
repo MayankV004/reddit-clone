@@ -84,7 +84,16 @@ export async function getRecentPosts() {
         createdAt: "desc",
       },
       include: {
-        community: true,
+        community:{
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            imageUrl: true,
+            createdAt: true,
+            description: true,
+          },
+        },
 
         votes: true,
         _count: {
