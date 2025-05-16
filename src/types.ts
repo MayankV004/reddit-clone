@@ -9,6 +9,9 @@ export interface Community {
 export interface User {
   id: string;
   username: string;
+  email?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
   
  export interface Post {
@@ -34,9 +37,18 @@ export interface User {
     id: string;
     content: string;
     postId: string;
-    authorId: string;
+    userId: string;
     createdAt: Date;
-    author?: User;
+    updatedAt: Date;
+    parentId?: string | null;
+    user?: User;
+    post?: Post;
+    votes: Vote[];
+    replies: Comment[]; 
+    _count?: {
+      votes: number;
+      replies: number;
+    };
   }
   
   export interface Vote {
@@ -45,4 +57,7 @@ export interface User {
     userId: string;
     postId: string | null;
     commentId?: string | null;
+    user?: User;
+    createdAt: Date;
+    updatedAt: Date;
   }

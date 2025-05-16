@@ -1,50 +1,74 @@
 'use client';
-
 import { useState } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface VoteButtonsProps {
-  postId: string;
+  postId?: string;
+  commentId?: string;
   initialVoteScore: number;
   initialVote: number; // 1, -1, or 0
   isLoggedIn: boolean;
+  orientation?: 'vertical' | 'horizontal';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export default function VoteButtons({
   postId,
+  commentId,
   initialVoteScore,
   initialVote,
   isLoggedIn,
+  orientation = 'vertical',
+  size = 'md',
 }: VoteButtonsProps) {
   const [voteScore, setVoteScore] = useState(initialVoteScore);
   const [userVote, setUserVote] = useState(initialVote);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Determine icon size based on the size prop
+  const iconSize = {
+    sm: 14,
+    md: 18,
+    lg: 22
+  }[size];
+
+  // CSS classes for different orientations
+  const containerClasses = orientation === 'vertical' 
+    ? 'flex flex-col items-center space-y-1' 
+    : 'flex flex-row items-center space-x-2';
+
   async function handleVote(value: number) {
     if (!isLoggedIn) {
-      toast.error('You must be logged in to vote');
+      toast('You must be logged in to vote');
       return;
     }
 
     if (isLoading) return;
+    if (!postId && !commentId) return;
 
     try {
       setIsLoading(true);
       
-      // If clicking the same button, remove the vote
-      const voteValue = userVote === value ? 0 : value;
+     
+      const newVoteValue = userVote === value ? 0 : value;
       
-      // Optimistically update UI
-      if (userVote === value) {
-        // Remove vote
-        setVoteScore(voteScore - value);
-        setUserVote(0);
+     
+      let scoreDelta = 0;
+      if (userVote === 0) {
+     
+        scoreDelta = value;
+      } else if (newVoteValue === 0) {
+      
+        scoreDelta = -userVote;
       } else {
-        // Add new vote or change existing vote
-        setVoteScore(voteScore - userVote + value);
-        setUserVote(value);
+        
+        scoreDelta = 2 * value;
       }
+      
+    
+      setVoteScore(prev => prev + scoreDelta);
+      setUserVote(newVoteValue);
 
       // Send request to API
       const response = await fetch('/api/votes', {
@@ -54,53 +78,70 @@ export default function VoteButtons({
         },
         body: JSON.stringify({
           postId,
-          value: voteValue,
+          commentId,
+          value: newVoteValue,
         }),
       });
 
       if (!response.ok) {
+        const error = await response.json();
+        console.error('Vote error:', error);
         throw new Error('Failed to cast vote');
       }
-
+      
     } catch (error) {
-      // Revert on error
+      console.error('Vote error:', error);
+     
       setVoteScore(initialVoteScore);
       setUserVote(initialVote);
-      toast.error('Something went wrong. Please try again.');
+      toast('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
   }
 
+ 
+  const buttonSize = {
+    sm: 'p-0.5',
+    md: 'p-1',
+    lg: 'p-1.5'
+  }[size];
+  
+  const textSize = {
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base'
+  }[size];
+
   return (
-    <div className="flex flex-col items-center space-y-2">
+    <div className={containerClasses}>
       <button
-        className={`p-1 rounded ${
+        className={`${buttonSize} rounded transition-colors ${
           userVote === 1 ? 'text-orange-500' : 'text-gray-400 hover:text-gray-600'
         }`}
         onClick={() => handleVote(1)}
         disabled={isLoading}
         aria-label="Upvote"
       >
-        <ChevronUp className="w-5 h-5" />
+        <ChevronUp size={iconSize} />
       </button>
       
-      <span className={`text-xs font-medium ${
-        userVote === 1 ? 'text-orange-500' : 
+      <span className={`${textSize} font-medium ${
+        userVote === 1 ? 'text-orange-500' :
         userVote === -1 ? 'text-blue-500' : 'text-gray-600'
       }`}>
         {voteScore}
       </span>
       
       <button
-        className={`p-1 rounded ${
+        className={`${buttonSize} rounded transition-colors ${
           userVote === -1 ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'
         }`}
         onClick={() => handleVote(-1)}
         disabled={isLoading}
         aria-label="Downvote"
       >
-        <ChevronDown className="w-5 h-5" />
+        <ChevronDown size={iconSize} />
       </button>
     </div>
   );
