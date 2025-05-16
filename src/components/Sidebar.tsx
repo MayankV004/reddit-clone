@@ -27,6 +27,8 @@ const navItems: NavItem[] = [
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
+  
+
   return (
     <motion.aside
       initial={{ width: isOpen ? 200 : 56 }}

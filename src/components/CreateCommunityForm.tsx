@@ -1,15 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function CreateCommunityForm() {
   const router = useRouter();
+  const {data: session , status} = useSession();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  // const [image, setImage] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(()=> {
+    if(status === 'unauthenticated')
+    {
+      router.push("/login");
+    }
+  } , [status , router])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +43,17 @@ export default function CreateCommunityForm() {
       const data = await response.json();
 
       if (!response.ok) {
+
+        if (response.status === 401) {
+          router.push(`/login?callbackUrl=${encodeURIComponent('/communities')}`);
+          return;
+        }
         throw new Error(data.error || 'Something went wrong');
       }
-
-      // Reset form and redirect to the new community
+      //reset form
       setName('');
       setDescription('');
-      // setImage('');
+    
       router.push(`/r/${data.slug}`);
       router.refresh();
     } catch (err) {
@@ -53,6 +66,24 @@ export default function CreateCommunityForm() {
       setIsLoading(false);
     }
   };
+  
+  if (status === 'loading') {
+    return (
+      <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-10 bg-gray-200 rounded mb-4"></div>
+          <div className="h-24 bg-gray-200 rounded mb-4"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+
+  if (status === 'unauthenticated') {
+    return null; 
+  }
 
   return (
     <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto">
@@ -99,20 +130,6 @@ export default function CreateCommunityForm() {
             placeholder="Describe your community"
           ></textarea>
         </div>
-        {/* <div className='mb-4'>
-          <label htmlFor='image' className="block text-sm font-medium text-gray-700 mb-1">
-            Image URL
-          </label>
-          <input
-            type="url"
-            id="image"
-            name="image"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="https://example.com/image.jpg"
-          />
-        </div> */}
         <div>
 
         </div>

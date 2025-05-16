@@ -1,6 +1,8 @@
 import Link from "next/link";
-import CreateCommunityForm from "@/components/CreateCommunityForm";
+// import CreateCommunityForm from "@/components/CreateCommunityForm";
 import { getCommunities } from "@/app/actions/communityActions";
+import { CommunitySidebar } from "@/components/community/CommunitySidebar";
+
 export default async function CommunitiesPage() {
   const communities = await getCommunities();
 
@@ -59,7 +61,7 @@ export default async function CommunitiesPage() {
         </div>
         <div>
           <div className="sticky top-6">
-            <CreateCommunityForm />
+            <CommunitySidebar />
           </div>
         </div>
       </div>
