@@ -54,23 +54,22 @@ export default function VoteButtons({
       const newVoteValue = userVote === value ? 0 : value;
       
      
-      let scoreDelta = 0;
+      let vote = 0;
       if (userVote === 0) {
      
-        scoreDelta = value;
+        vote = value;
       } else if (newVoteValue === 0) {
       
-        scoreDelta = -userVote;
+        vote = -userVote;
       } else {
         
-        scoreDelta = 2 * value;
+        vote = 2 * value;
       }
       
     
-      setVoteScore(prev => prev + scoreDelta);
+      setVoteScore(prev => prev + vote);
       setUserVote(newVoteValue);
 
-      // Send request to API
       const response = await fetch('/api/votes', {
         method: 'POST',
         headers: {
