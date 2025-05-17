@@ -2,14 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from 'next/navigation';
 import { Metadata } from "next";
 
-// Use the correct type definition for layout params
-interface CommunityLayoutParams {
-  params: {
-    slug: string;
-  };
-  children: React.ReactNode;
-}
-
 async function getCommunityBySlug(slug: string) {
   try {
     const community = await prisma.community.findUnique({
@@ -35,13 +27,13 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default async function CommunityLayout({
   children,
   params,
-}: CommunityLayoutParams) {
+}: any) {
   const { slug } = params;
   const community = await getCommunityBySlug(slug);
-  // console.log("Community Layout", community);
   
   if (!community) {
     return notFound();
