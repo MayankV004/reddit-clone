@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 interface Params {
@@ -7,7 +7,7 @@ interface Params {
   };
 }
 
-export async function GET({ params }: Params) {
+export async function GET(request : NextRequest , { params }: Params) {
   const { slug } = params;
   try {
     const community = await prisma.community.findUnique({

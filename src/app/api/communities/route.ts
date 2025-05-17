@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/session";
@@ -16,7 +16,7 @@ const communitySchema = z.object({
   // image: z.string().url().optional(),
 });
 
-export async function GET() { // to fetch all Communities
+export async function GET(req: NextRequest) { // to fetch all Communities
   try {
     const communities = await prisma.community.findMany({
       orderBy: {

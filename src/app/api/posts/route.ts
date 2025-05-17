@@ -17,7 +17,6 @@ export async function GET(req: Request) {
     const sort = url.searchParams.get("sort") || "recent"
 
     let posts;
-    let orderBy = {};
     if (sort === "votes") {
       // orderBy = {
       //   votes: {
