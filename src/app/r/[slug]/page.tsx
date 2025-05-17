@@ -2,16 +2,10 @@ import CommunityHeader from "@/components/community/CommunityHeader";
 import { notFound } from "next/navigation";
 import PostFeed from "@/components/PostFeed";
 import { getCommunity } from "@/app/actions/communityActions";
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
 
-export default async function CommunityPage({ params }: PageProps) {
-  const resParams = await Promise.resolve(params);
-
-  const { slug } = resParams;
+export default async function CommunityPage({ params }: any) {
+ 
+  const { slug } = params;
   const community = await getCommunity(slug);
   
 
