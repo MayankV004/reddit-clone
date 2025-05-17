@@ -1,14 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-interface Params {
-  params: {
-    slug: string;
-  };
-}
 
-export async function GET(request : NextRequest , { params }: Params) {
-  const { slug } = params;
+export async function GET(request : NextRequest) {
+  const path = request.nextUrl.pathname;
+  const slug = path.split("/").pop() 
+  if (!slug) {
+    return NextResponse.json(
+      { error: "Slug is required" },
+      { status: 400 }  
+     );}
+
   try {
     const community = await prisma.community.findUnique({
       where: {

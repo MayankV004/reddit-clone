@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(req : NextRequest,
-  { params }: { params: { slug: string } }
-) {
-  try {
-    const { slug } = params;
 
+export async function GET(req: NextRequest) {
+  try {
+    const pathname = req.nextUrl.pathname;
+    const slug = pathname.split('/').pop();
+    
+    if (!slug) {
+      return NextResponse.json(
+        { error: "Invalid slug parameter" },
+        { status: 400 }
+      );
+    }
+    
     const post = await prisma.post.findUnique({
       where: {
         slug,
@@ -58,11 +65,11 @@ export async function GET(req : NextRequest,
         },
       },
     });
-
+    
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
-
+    
     return NextResponse.json(post, { status: 200 });
   } catch (error) {
     console.error("Error fetching post:", error);
