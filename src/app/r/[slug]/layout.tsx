@@ -28,21 +28,13 @@ async function getCommunityBySlug(slug: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }):Promise<Metadata> {
-  const resParams = await Promise.resolve(params)
-  const community = await getCommunityBySlug(resParams.slug);
-  
-  if (!community) {
-    return {
-      title: 'Community Not Found',
-    };
-  }
-
-  return {
-    title: `r/${community.slug} - Reddit Clone`,
-    description: `Community page for r/${community.slug}`,
-  };
-}
+export const metadata: Metadata = {
+  title: "Community-Reddit",
+  description: "Community Page",
+  icons: {
+    icon: "/reddit_favicon.png",
+  },
+};
 
 export default async function CommunityLayout({ children, params }: LayoutProps) {
   const resParams = await Promise.resolve(params)
