@@ -120,3 +120,50 @@ export async function getRecentPosts() {
     await prisma.$disconnect();
   }
 }
+
+export async function getPopularPosts() {
+  try {
+    const posts = await prisma.post.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        community: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            imageUrl: true,
+            description: true,
+            createdAt: true,
+          },
+        },
+        votes: true,
+        _count: {
+          select: {
+            comments: true,
+            votes: true,
+          },
+        },
+      },
+      
+    });
+    const sortedPost = posts.map(post => {
+      const voteScore = post.votes.reduce((total , vote) => total + vote.value , 0);
+      return {
+        ...post, voteScore
+      }
+    })
+    const x = sortedPost.sort((a, b) => b.voteScore - a.voteScore);
+    return x
+  } catch (error) {
+    console.error("Error fetching popular posts:", error);
+    return [];
+  } finally {
+    await prisma.$disconnect();
+  }
+}

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { requireAuth } from "@/lib/session";
+import { getPopularPosts, getRecentPosts } from "@/app/actions/postActions";
 
 
 const postSchema = z.object({
@@ -9,36 +10,56 @@ const postSchema = z.object({
   content: z.string().min(3).max(5000),
 });
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const posts = await prisma.post.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        community: {
-          select: {
-            name: true,
-            slug: true,
-            id: true,
-          },
-        },
-        user: {
-          select: {
-            username: true,
-            // image: true,
-            id: true,
-          },
-        },
-        votes: true,
-        _count: {
-          select: {
-            comments: true,
-            votes: true,
-          },
-        },
-      },
-    });
+
+    const url = new URL(req.url); 
+    const sort = url.searchParams.get("sort") || "recent"
+
+    let posts;
+    let orderBy = {};
+    if (sort === "votes") {
+      // orderBy = {
+      //   votes: {
+      //     _count: "desc",
+      //   },
+      // };
+      posts = await getPopularPosts()
+    } else {
+      // orderBy = {
+      //   createdAt: "desc",
+      // };
+      posts = await getRecentPosts();
+    }
+
+
+
+    // const posts = await prisma.post.findMany({
+    //   orderBy,
+    //   include: {
+    //     community: {
+    //       select: {
+    //         name: true,
+    //         slug: true,
+    //         id: true,
+    //       },
+    //     },
+    //     user: {
+    //       select: {
+    //         username: true,
+    //         image: true,
+    //         id: true,
+    //       },
+    //     },
+    //     votes: true,
+    //     _count: {
+    //       select: {
+    //         comments: true,
+    //         votes: true,
+    //       },
+    //     },
+    //   },
+    // });
     return NextResponse.json(posts, { status: 200 });
   } catch (error) {
     return NextResponse.json(

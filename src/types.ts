@@ -7,6 +7,10 @@ export interface Community {
   updatedAt: Date;
   imageUrl: string | null;
   description: string | null;
+  _count?: {
+    posts:number
+  }
+
   posts?: Post[];
 }
 export interface User {
