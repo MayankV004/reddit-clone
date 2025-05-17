@@ -127,14 +127,14 @@ export default function VoteButtons({
       
       <span className={`${textSize} font-medium ${
         userVote === 1 ? 'text-orange-500' :
-        userVote === -1 ? 'text-blue-500' : 'text-gray-600'
+        userVote === -1 ? 'text-purple-500' : 'text-gray-600'
       }`}>
         {voteScore}
       </span>
       
       <button
         className={`${buttonSize} rounded transition-colors ${
-          userVote === -1 ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'
+          userVote === -1 ? 'text-purple-500' : 'text-gray-400 hover:text-gray-600'
         }`}
         onClick={() => handleVote(-1)}
         disabled={isLoading}

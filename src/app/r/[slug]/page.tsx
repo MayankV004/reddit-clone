@@ -32,8 +32,8 @@ export default async function CommunityPage({ params }: PageProps) {
       <div className="mt-6">
         <h2 className="text-lg font-semibold mb-4">Posts</h2>
         {community.posts.length === 0 ? (
-          <div className="p-6 bg-white rounded-md shadow">
-            <p className="text-center text-gray-500">No posts yet</p>
+          <div className="p-6 bg-white rounded-md shadow dark:bg-zinc-900 dark:shadow-md dark:border-1">
+            <p className="text-center text-zinc-500">No posts yet</p>
           </div>
         ) : (
           <PostFeed posts={community.posts} />

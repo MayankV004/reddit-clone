@@ -69,7 +69,7 @@ export default function CreateCommunityForm() {
   
   if (status === 'loading') {
     return (
-      <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto">
+      <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto dark:bg-zinc-900 dark:shadow-md dark:border-1">
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
           <div className="h-10 bg-gray-200 rounded mb-4"></div>
@@ -86,16 +86,16 @@ export default function CreateCommunityForm() {
   }
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto">
+    <div className="bg-white shadow rounded-lg p-6 max-w-md mx-auto dark:bg-zinc-900 dark:shadow-md dark:border-1">
       <h2 className="text-xl font-bold mb-4">Create a Community</h2>
       
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-zinc-500 mb-1">
             Name
           </label>
           <div className="flex items-center">
-            <span className="bg-gray-100 border border-r-0 border-gray-300 rounded-l-md px-3 py-2 text-gray-500">
+            <span className="bg-gray-100 border border-r-0 border-zinc-600 rounded-l-md px-3 py-2 text-zinc-200 dark:bg-zinc-900">
               r/
             </span>
             <input
@@ -105,7 +105,7 @@ export default function CreateCommunityForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="community_name"
-              className="flex-1 border border-gray-300 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 border border-zinc-600 rounded-r-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
               required
               minLength={3}
               maxLength={21}
@@ -116,7 +116,7 @@ export default function CreateCommunityForm() {
           </p>
         </div>
         <div className='mb-4'>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-zinc-500 mb-1">
             Description
           </label>
           <textarea
@@ -126,7 +126,7 @@ export default function CreateCommunityForm() {
             onChange={(e) => setDescription(e.target.value)}
 
             rows={3}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full border border-zinc-600 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500"
             placeholder="Describe your community"
           ></textarea>
         </div>
@@ -143,7 +143,7 @@ export default function CreateCommunityForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md font-medium transition-colors disabled:bg-blue-300"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-full font-thin transition-colors disabled:bg-orange-300"
         >
           {isLoading ? 'Creating...' : 'Create Community'}
         </button>

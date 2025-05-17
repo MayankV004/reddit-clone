@@ -73,7 +73,7 @@ function CommentItem({
       setReplies(data);
       setShowReplies(true);
     } catch (error) {
-      toast.error("Failed to load replies");
+      toast("Failed to load replies");
     } finally {
       setIsLoadingReplies(false);
     }
@@ -83,12 +83,12 @@ function CommentItem({
     e.preventDefault();
 
     if (!isLoggedIn) {
-      toast.error("You must be logged in to reply");
+      toast("You must be logged in to reply");
       return;
     }
 
     if (!replyText.trim()) {
-      toast.error("Reply cannot be empty");
+      toast("Reply cannot be empty");
       return;
     }
 
@@ -120,15 +120,15 @@ function CommentItem({
 
       setReplyText("");
       setIsReplying(false);
-      toast.success("Reply posted successfully");
+      toast("Reply posted successfully");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast("Something went wrong. Please try again.");
     }
   }
 
   async function handleVote(value: number) {
     if (!isLoggedIn) {
-      toast.error("You must be logged in to vote");
+      toast("You must be logged in to vote");
       return;
     }
 
@@ -162,7 +162,7 @@ function CommentItem({
     } catch (error) {
       setVoteScore(getTotalVotes(comment.votes));
       setUserVote(getUserVote(comment.votes, userId));
-      toast.error("Something went wrong. Please try again.");
+      toast("Something went wrong. Please try again.");
     }
   }
 
@@ -325,12 +325,12 @@ export default function CommentSection({
     e.preventDefault();
 
     if (!isLoggedIn) {
-      toast.error("You must be logged in to comment");
+      toast("You must be logged in to comment");
       return;
     }
 
     if (!newComment.trim()) {
-      toast.error("Comment cannot be empty");
+      toast("Comment cannot be empty");
       return;
     }
 
@@ -366,12 +366,12 @@ export default function CommentSection({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
+    <div className="bg-white rounded-lg shadow p-4 dark:bg-zinc-800 dark:border dark:border-zinc-700">
       <h2 className="text-lg font-medium mb-4">Comments</h2>
 
       <form onSubmit={handleSubmitComment} className="mb-6">
         <textarea
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-white min-h-[100px]"
           placeholder={
             isLoggedIn ? "What are your thoughts?" : "Log in to leave a comment"
           }

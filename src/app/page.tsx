@@ -49,7 +49,7 @@ export default async function HomePage() {
         </div>
 
         <div>
-          <div className="bg-white rounded-md shadow p-4 mb-6 dark:bg-zinc-900 dark:shadow-md dark:border-white dark:border-1 mt-4">
+          <div className="bg-white rounded-md shadow p-4 mb-6 dark:bg-zinc-900 dark:shadow-md  dark:border-1 mt-4">
             <h2 className="text-lg font-semibold mb-3">Popular Communities</h2>
 
             {popularCommunities.length > 0 ? (
@@ -58,7 +58,7 @@ export default async function HomePage() {
                   <Link
                     key={community.id}
                     href={`/r/${community.slug}`}
-                    className="block p-2 hover:bg-gray-50 rounded-md transition-colors dark:hover:bg-zinc-800"
+                    className="block p-2 hover:bg-gray-50 rounded-md transition-colors dark:hover:bg-zinc-800 "
                   >
                     <div className="font-medium">r/{community.slug}</div>
                     <div className="text-xs text-gray-500">
@@ -75,7 +75,7 @@ export default async function HomePage() {
                 </Link>
               </div>
             ) : (
-              <div className="text-center text-gray-500 py-2">
+              <div className="text-center text-zinc-500 py-2">
                 <p>No communities yet</p>
                 <Link
                   href="/communities"
@@ -87,20 +87,23 @@ export default async function HomePage() {
             )}
           </div>
 
-          <div className="bg-white rounded-md shadow p-4">
-            <h2 className="text-lg font-semibold mb-3">About Reddit Clone</h2>
-            <p className="text-gray-600 mb-4">
-              Welcome to our Reddit Clone MVP! This platform allows you to
-              create and join communities, share posts, and engage in
-              discussions.
-            </p>
-
-            <Link
-              href="/communities"
-              className="block w-full bg-blue-500 hover:bg-blue-600 text-white text-center py-2 rounded-md transition-colors"
-            >
-              Browse Communities
-            </Link>
+          <div className="dark:bg-zinc-900 bg-white rounded-md shadow p-4 fixed bottom-2 text-xs text-zinc-500 flex flex-col items-start ">
+            <div className="flex items-center gap-2">
+              <Link href="#" className="hover:underline " > 
+              Reddit Rules
+              </Link>
+              <Link href="#" className="hover:underline " > 
+              Privacy Policy
+              </Link>
+              <Link href="#" className="hover:underline " > 
+              User Agreement
+              </Link>
+            </div>
+            <div >
+              <p className="text-center text-gray-500 text-xs mt-2 hver:underline">
+               Reddit, Inc © 2025 All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
       </div>

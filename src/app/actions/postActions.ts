@@ -109,10 +109,9 @@ export async function getRecentPosts() {
           },
         },
       },
-      take: 10, // Limit to 10 most recent posts
+      
     });
 
-    // Now we can return the posts directly without any transformation
     return posts;
   } catch (error) {
     console.error("Error fetching recent posts:", error);

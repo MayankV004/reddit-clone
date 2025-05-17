@@ -1,11 +1,10 @@
+
 import { getPostData, getVoteStatus } from "@/app/actions/postActions";
 import { notFound } from "next/navigation";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import VoteButtons from "@/components/posts/VoteButtons";
 import CommentSection from "@/components/comments/CommentSection";
 import { requireAuth } from "@/lib/session";
@@ -54,10 +53,10 @@ async function PostPage({ params }: PostPageProps) {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg shadow dark:bg-zinc-800 border dark:border-zinc-700">
         <div className="flex">
           {/* Vote section */}
-          <div className="bg-gray-50 p-2 rounded-l-lg">
+          <div className="bg-gray-50 p-2 rounded-l-lg dark:bg-zinc-900">
             <VoteButtons
               postId={post.id}
               initialVoteScore={voteScore}
@@ -90,10 +89,13 @@ async function PostPage({ params }: PostPageProps) {
               <div className="flex items-center">
                 <MessageSquare className="w-4 h-4 mr-1" />
                 <span>{post._count.comments} comments</span>
+
               </div>
+              
             </div>
           </div>
         </div>
+        
       </div>
 
       {/* Comments section */}

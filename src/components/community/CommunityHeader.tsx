@@ -22,7 +22,7 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
 
     
     return (
-        <div className="bg-white shadow rounded-md p-4">
+        <div className="bg-white shadow rounded-md p-4 dark:bg-zinc-900 border-1 dark:shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <img
@@ -52,14 +52,14 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
                   setIsPostOpen(true)
                  
                 }}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Create Post
             </button>
           ) : (
             <Link
               href="/sign-in"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Sign in to Post
             </Link>
