@@ -11,11 +11,12 @@ import { requireAuth } from "@/lib/session";
 interface PostPageProps {
   params: {
     id: string;
+    slug: string;
   };
 }
 async function PostPage({ params }: PostPageProps) {
-  const resParams = await Promise.resolve(params);
-  const { id } = resParams;
+  
+  const { id } = params;
   const post = await getPostData(id);
 
   if (!post) {
@@ -23,8 +24,8 @@ async function PostPage({ params }: PostPageProps) {
   }
  
   const user = await requireAuth();
-  const userId = user.id;
-  const userVote = user.id ? await getVoteStatus(post.id) : null;
+  const userId = user?.id;
+  const userVote = user?.id ? await getVoteStatus(post.id) : null;
   const voteScore = post.votes.reduce((acc, vote) => acc + vote.value, 0);
   const createdAt = formatDistanceToNow(new Date(post.createdAt), {
     addSuffix: true,
