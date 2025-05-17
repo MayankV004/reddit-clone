@@ -48,3 +48,54 @@ export async function getPopularCommunities() {
     await prisma.$disconnect();
   }
 }
+
+export async function getCommunity(slug: string) {
+  try {
+    const community = await prisma.community.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        posts: {         
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            community: {
+              select: {
+                name: true,
+                slug: true,
+                id: true,
+                description: true,
+                createdAt: true,
+                imageUrl: true,
+                
+              },
+
+            },
+            user: {
+              select: {
+                username: true,
+                image: true,
+                id: true,
+              },
+            },
+            votes: true,
+            _count: {
+              select: {
+                comments: true,
+                votes: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return community;
+  } catch (error) {
+    console.error("Error in fetching Community", error);
+    return null;
+  } finally {
+    await prisma.$disconnect();
+  }
+}

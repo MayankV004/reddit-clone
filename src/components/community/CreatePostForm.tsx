@@ -11,14 +11,8 @@ function CreatePostForm({ communityId, onClose }: CreatePostFormData) {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-
-  const [isLoading, setIsLoading] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Dropzone for file uploads
-;
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +38,7 @@ function CreatePostForm({ communityId, onClose }: CreatePostFormData) {
         throw new Error(data.error || "Failed to create post");
       }
 
-      // Reset form and refresh page
+   
       setTitle("");
       setContent("");
       router.refresh();

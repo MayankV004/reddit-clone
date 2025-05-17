@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react"
 import Link from "next/link";
 import { useState } from "react";
 import CreatePostForm from "./CreatePostForm"
-
 interface CommunityHeaderProps {
   community: Community;
 }
@@ -20,7 +19,8 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
       day: 'numeric'
     });
   };
-    // console.log("Community Header", community);
+
+    
     return (
         <div className="bg-white shadow rounded-md p-4">
       <div className="flex items-center justify-between">
@@ -45,7 +45,13 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
         <div>
           {status === "authenticated" ? (
             <button
-              onClick={() => setIsPostOpen(true)}
+              onClick={() => 
+                {
+                  
+
+                  setIsPostOpen(true)
+                 
+                }}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Create Post

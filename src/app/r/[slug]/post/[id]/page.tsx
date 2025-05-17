@@ -22,7 +22,7 @@ async function PostPage({ params }: PostPageProps) {
   if (!post) {
     return notFound();
   }
-  console.log(post.votes)
+ 
   const user = await requireAuth();
   const userId = user.id;
   const userVote = user.id ? await getVoteStatus(post.id) : null;

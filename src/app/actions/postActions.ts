@@ -84,17 +84,23 @@ export async function getRecentPosts() {
         createdAt: "desc",
       },
       include: {
-        community:{
+        user: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        community: {
           select: {
             id: true,
             name: true,
             slug: true,
             imageUrl: true,
-            createdAt: true,
             description: true,
+            createdAt: true,
           },
         },
-
         votes: true,
         _count: {
           select: {
@@ -106,6 +112,7 @@ export async function getRecentPosts() {
       take: 10, // Limit to 10 most recent posts
     });
 
+    // Now we can return the posts directly without any transformation
     return posts;
   } catch (error) {
     console.error("Error fetching recent posts:", error);

@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/select";
 import { getRecentPosts } from "./actions/postActions";
 import { getPopularCommunities } from "./actions/communityActions";
-import { Post } from "@/types";
+import { getCurrentUser } from "@/lib/session";
 export default async function HomePage() {
   const recentPosts = await getRecentPosts();
-  // console.log(recentPosts)
   const popularCommunities = await getPopularCommunities();
+  const currentUser = await getCurrentUser();
   return (
     <div className="container mx-auto max-w-5xl px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -33,18 +33,7 @@ export default async function HomePage() {
           </div>
           {recentPosts.length > 0 ? (
             <PostFeed
-              posts={recentPosts.map((post) => ({
-                  ...post,
-                  createdAt: new Date(post.createdAt),
-                  updatedAt: new Date(post.updatedAt),
-                  community: { 
-                    id: post.community.id, 
-                    name: post.community.name, 
-                    slug: post.community.slug,
-                    createdAt: post.community.createdAt,
-                    description: post.community.description,
-                  },
-                })) as Post[]}
+              posts={recentPosts} currentUser={currentUser} 
             />
           ) : (
             <div className="bg-white rounded-md shadow p-6 text-center">

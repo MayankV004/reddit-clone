@@ -2,9 +2,12 @@ export interface Community {
   id: string;
   name: string;
   slug: string | null;
+  creatorId: string;
   createdAt: Date;
-  imageUrl?: string;
-  description?: string;
+  updatedAt: Date;
+  imageUrl: string | null;
+  description: string | null;
+  posts?: Post[];
 }
 export interface User {
   id: string;
@@ -15,22 +18,33 @@ export interface User {
 }
   
  export interface Post {
-  id: string;
-  title: string;
-  content: string | null;
-  imageUrl?: string | null;
-  communityId: string;
-  slug: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  community?: Community;
-  user?: User;
-  votes: Vote[];
-  _count?: {
-    comments: number;
-    votes: number;
-  };
+    id: string;
+    title: string;
+    content: string | null;
+    imageUrl: string | null;
+    communityId: string;
+    slug: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    community?: {
+      id: string;
+      name: string;
+      slug: string | null;
+      imageUrl: string | null;
+      description: string | null;
+      createdAt: Date;
+    };
+    user?: {
+      id: string;
+      username: string;
+      image: string | null;
+    };
+    votes: any[];
+    _count?: {
+      comments: number;
+      votes: number;
+    };
 }
   
   export interface Comment {
