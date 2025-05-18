@@ -58,7 +58,7 @@ function CreatePostForm({ communityId, onClose }: CreatePostFormData) {
   };
 
   return (
-    <div className="bg-white rounded-md shadow p-4">
+    <div className="bg-white rounded-md shadow p-4 dark:bg-zinc-900 dark:shadow-md border-1">
       <h2 className="text-lg font-semibold mb-4">Create a Post</h2>
 
       <form onSubmit={handleSubmit}>

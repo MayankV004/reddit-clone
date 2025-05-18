@@ -68,7 +68,7 @@ export default function CommunityHeader({community} : CommunityHeaderProps){
       </div>
 
       {isPostOpen && (
-        <div className="mt-4">
+        <div className="mt-4 ">
           <CreatePostForm 
             communityId={community.id} 
             onClose={() => setIsPostOpen(false)} 

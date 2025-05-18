@@ -2,12 +2,18 @@ import CommunityHeader from "@/components/community/CommunityHeader";
 import { notFound } from "next/navigation";
 import PostFeed from "@/components/PostFeed";
 import { getCommunity } from "@/app/actions/communityActions";
+import { getCurrentUser} from "@/lib/session";
+type pageProps = {
+  params :{
+    slug:string
+  }
+}
 
-export default async function CommunityPage({ params }: any) {
- 
-  const { slug } = params;
-  const community = await getCommunity(slug);
+export default async function CommunityPage({ params }: pageProps) {
   
+  const { slug } = await params;
+  const community = await getCommunity(slug);
+  const user = await getCurrentUser();
 
   if (!community) {
     return notFound();
@@ -30,7 +36,7 @@ export default async function CommunityPage({ params }: any) {
             <p className="text-center text-zinc-500">No posts yet</p>
           </div>
         ) : (
-          <PostFeed posts={community.posts} />
+          <PostFeed posts={community.posts} currentUser={user} />
         )}
       </div>
     </div>

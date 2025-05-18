@@ -32,7 +32,7 @@ export default async function CommunityLayout({
   children,
   params,
 }: any) {
-  const { slug } = params;
+  const { slug } = await params;
   const community = await getCommunityBySlug(slug);
   
   if (!community) {
