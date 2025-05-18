@@ -1,6 +1,6 @@
 "use client"
 
-import { Community } from "@/types"
+import { Community } from "@/IType"
 import { useSession } from "next-auth/react"
 import Link from "next/link";
 import { useState } from "react";

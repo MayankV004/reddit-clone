@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import HomePage from "./HomePage";
-import { getPopularPosts, getRecentPosts } from "./actions/postActions";
+import { getRecentPosts } from "./actions/postActions";
 import { getPopularCommunities } from "./actions/communityActions";
 import { getCurrentUser } from "@/lib/session";
 

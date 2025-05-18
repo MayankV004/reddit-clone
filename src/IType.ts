@@ -44,7 +44,7 @@ export interface User {
       username: string;
       image: string | null;
     };
-    votes: any[];
+    votes: Vote[];
     _count?: {
       comments: number;
       votes: number;

@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Post , Community } from "@/types";
+import { Post , Community } from "@/IType";
 
 interface HomePageProps {
   initialPosts: Post[];

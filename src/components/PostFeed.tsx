@@ -8,7 +8,7 @@ import {
   Bookmark,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Post } from "@/types";
+import { Post } from "@/IType";
 import VoteButtons from "@/components/posts/VoteButtons"; 
 
 interface PostFeedProps {

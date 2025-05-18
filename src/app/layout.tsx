@@ -6,6 +6,7 @@ import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import Sidebar from "@/components/Sidebar";
 import ProgressProvider from "@/components/ProgressProvider";
+import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "Reddit - The hear of the internet",
   description: "A Reddit Clone built with Next.js",
@@ -20,7 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="dark:bg-zinc-900 bg-white text-zinc-900 dark:text-zinc-100 antialiased overflow-hidden">
+        <Suspense>
+
         <ProgressProvider />
+        </Suspense>
         <AuthProvider>
           <Toaster />
           <ThemeProvider
