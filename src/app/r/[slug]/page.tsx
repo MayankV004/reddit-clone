@@ -3,15 +3,15 @@ import { notFound } from "next/navigation";
 import PostFeed from "@/components/PostFeed";
 import { getCommunity } from "@/app/actions/communityActions";
 import { getCurrentUser} from "@/lib/session";
-type pageProps = {
+type PageProps = {
   params :{
     slug:string
   }
 }
 
-export default async function CommunityPage({ params }: pageProps) {
+export default async function CommunityPage({ params }: PageProps) {
   
-  const { slug } = await params;
+  const { slug } = params;
   const community = await getCommunity(slug);
   const user = await getCurrentUser();
 
