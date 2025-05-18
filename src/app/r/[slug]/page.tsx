@@ -2,15 +2,13 @@ import CommunityHeader from "@/components/community/CommunityHeader";
 import { notFound } from "next/navigation";
 import PostFeed from "@/components/PostFeed";
 import { getCommunity } from "@/app/actions/communityActions";
-import { getCurrentUser} from "@/lib/session";
-type PageProps = {
-  params :{
-    slug:string
-  }
-}
+import { getCurrentUser } from "@/lib/session";
 
-export default async function CommunityPage({ params }: PageProps) {
-  
+export default async function CommunityPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const { slug } = params;
   const community = await getCommunity(slug);
   const user = await getCurrentUser();
@@ -25,9 +23,7 @@ export default async function CommunityPage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto max-w-5xl pt-6">
-      <CommunityHeader
-        community={community}
-      />
+      <CommunityHeader community={community} />
 
       <div className="mt-6">
         <h2 className="text-lg font-semibold mb-4">Posts</h2>

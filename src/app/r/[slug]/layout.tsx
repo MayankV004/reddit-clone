@@ -1,23 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { notFound } from 'next/navigation';
 import { Metadata } from "next";
-
-async function getCommunityBySlug(slug: string) {
-  try {
-    const community = await prisma.community.findUnique({
-      where: {
-        slug,
-      },
-    });
-    
-    return community;
-  } catch (error) {
-    console.error('Error fetching community:', error);
-    return null;
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+import { getCommunity } from "@/app/actions/communityActions";
 
 export const metadata: Metadata = {
   title: "Community-Reddit",
@@ -27,13 +10,18 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default async function CommunityLayout({
   children,
   params,
-}: any) {
+}: {
+  children: React.ReactNode;
+  params: { slug: string };
+}) {
   const { slug } = params;
-  const community = await getCommunityBySlug(slug);
+  if(!slug){
+    return notFound();
+  }
+  const community = await getCommunity(slug);
   
   if (!community) {
     return notFound();
