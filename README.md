@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔍 Reddit Clone
 
-## Getting Started
+A full-featured Reddit clone built with Next.js, TypeScript, Supabase, Prisma, and shadcn/ui components.
 
-First, run the development server:
+## 📋 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User Authentication** - Sign up, login, and logout functionality using NextAuth
+- **Communities** - Create and browse communities (subreddits)
+- **Posts** - Create text, image, and link posts within communities
+- **Voting System** - Upvote and downvote posts
+- **Comments** - Comment on posts and engage in discussions
+- **Sorting** - Sort posts by popularity or recency
+- **Responsive Design** - Works seamlessly on mobile and desktop
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: [Next.js](https://nextjs.org/) with TypeScript
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 16+ and npm
+- Git
+- Supabase account for database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MayankV004/reddit-clone.git
+   cd reddit-clone
+   ```
 
-## Deploy on Vercel
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
+   ```
+   # Next Auth
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=http://localhost:3000
+   
+   # Next Auth Providers
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   
+   # Supabase
+   DATABASE_URL=your_supabase_connection_string
+   DIRECT_URL=your_direct_url
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   NEXT_PUBLIC_SUPABASE_URL=get_this from_your_supabase_project
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=get_this from_your_supabase_project
+   SUPABASE_SERVICE_ROLE_KEY=get_this from_your_supabase_project
+  
+   ```
+
+4. Set up Prisma:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📝 Database Schema
+
+The application uses the following data models:
+
+- **User**: Authentication and user profile information
+- **Community**: Subreddit-like groups
+- **Post**: User submissions within communities
+- **Comment**: Responses to posts
+- **Vote**: Upvotes/downvotes on posts
+
+## 📱 Key User Flows
+
+1. **Authentication**: Users can sign up, log in, and log out
+2. **Creating Communities**: Authenticated users can create new communities
+3. **Creating Posts**: Authenticated users can create posts in communities
+4. **Voting**: Authenticated users can upvote or downvote posts
+5. **Commenting**: Authenticated users can comment on posts
+6. **Browsing**: All users can browse communities and posts, sorted by popularity or recency
+
+## 🧩 API Routes
+
+- `/api/auth/[...nextauth]*` - NextAuth authentication endpoints
+- `/api/auth/register*` - For registering New user
+- `/api/communities` - CRUD operations for communities
+- `/api/posts` - CRUD operations for posts
+- `/api/comments` - CRUD operations for comments
+- `/api/votes` - Endpoints for post voting
+- `/api/users/profile` - For profile edit
+
+
+## 🚢 Deployment
+
+The application can be deployed on Vercel with minimal configuration:
+
+1. Connect your GitHub repository to Vercel
+2. Configure the environment variables
+3. Deploy
+
+## Acknowledgements
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [NextAuth.js Documentation](https://next-auth.js.org/)
