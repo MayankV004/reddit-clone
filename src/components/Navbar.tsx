@@ -24,7 +24,7 @@ function Navbar() {
 
   return (
     <header className="bg-white  dark:text-white dark:bg-zinc-900 shadow-sm sticky top-0 z-10 ">
-      <div className="container dark:border-b-2 mx-auto flex flex-1 items-center justify-between h-13 border-4">
+      <div className="container dark:border-b-2 mx-auto flex flex-1 items-center justify-between h-13">
         {/* Logo and title */}
         <div >
           <Link href="/" className=" flex  items-center space-x-2">
